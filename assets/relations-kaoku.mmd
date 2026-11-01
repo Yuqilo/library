@@ -1,0 +1,49 @@
+flowchart TB
+  subgraph H["片渊本家"]
+    A["片渊嘉永<br/>明治末期家主"]
+    B["宗一郎<br/>长子 · 与妹妹千鹤生双胞胎"]
+    C["千鹤<br/>妹妹"]
+    D["清吉<br/>庶出 · 分家家主"]
+    A --> B
+    A --> C
+    A --> D
+  end
+
+  subgraph T["片渊分家"]
+    E["清吉的五个妻子<br/>志津子 / 美也子等"]
+    F["分家子孙<br/>（名单上一百多人）"]
+    E --> F
+  end
+
+  A -. 庶出 .-> D
+  B --- C
+  C --> G["麻太 / 桃太<br/>双胞胎 · 桃太无左手"]
+  B --> G
+  D -. 姊妹 .-> H2["兰镜（美也子）<br/>假扮咒术师"]
+  E -. 妹妹 .-> H2
+
+  I["片渊重治<br/>祖父 · 深信家规"]
+  J["片渊文乃<br/>祖母"]
+  K["片渊喜江<br/>柚希与绫乃的母亲"]
+  L["片渊柚希<br/>叙述者"]
+  M["片渊绫乃<br/>姐姐 · 保护者"]
+  N["片渊庆太<br/>绫乃丈夫 · 入赘"]
+  O["桃弥<br/>无左手的孩子 · 被囚"]
+  P["浩人<br/>绫乃与庆太之子"]
+  Q["美咲<br/>洋一之母"]
+  R["洋一<br/>死在佛龛前"]
+  S["森垣清次<br/>文乃外甥 · 监视者"]
+
+  I --> K
+  K --> L
+  K --> M
+  M --- N
+  N --> P
+  N -. 保护 .-> O
+  Q --> R
+  I -. 监视 .-> S
+
+  style H2 fill:#a63c2e,color:#fff,stroke:#8a2f23
+  style I fill:#2f4a3c,color:#fff,stroke:#243a2f
+  style O fill:#4c78a8,color:#fff,stroke:#3d648c
+  style N fill:#b4772a,color:#fff,stroke:#8f5d1f
