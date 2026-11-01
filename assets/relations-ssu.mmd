@@ -1,0 +1,53 @@
+flowchart TB
+  subgraph S["水使家 · 五月夜村"]
+    A["水使龙玺<br/>水使神社宫司 · 水利合作社首领"]
+    B["水使龙一<br/>十三年前神男 · 已故"]
+    C["水使龙三<br/>现任神男 · 已故"]
+    A --> B
+    A --> C
+  end
+
+  subgraph U["水内家 · 物种村"]
+    D["水内龙吉朗<br/>水内神社宫司 · 已故"]
+    E["水内世路<br/>龙吉朗之子"]
+    D --> E
+  end
+
+  subgraph T["水庭家 · 佐保村"]
+    F["水庭流虎<br/>水庭神社宫司"]
+    G["水庭游魔<br/>流虎之子"]
+    F --> G
+  end
+
+  subgraph M["水分家 · 青田村"]
+    H["水分辰男<br/>二十三年前失踪"]
+    I["水分辰卅<br/>辰男之子 · 已故"]
+    H --> I
+  end
+
+  subgraph K["宫木家"]
+    J["左雾<br/>出身神神栉村 · 有玄妙之力"]
+    K1["宫木鹤子<br/>长女 · 原定活祭"]
+    K2["宫木小夜子<br/>次女 · 活祭 · 失踪"]
+    K3["正一<br/>幼子 · 复仇者"]
+    J --> K1
+    J --> K2
+    J --> K3
+  end
+
+  L["樽味市郎<br/>逃兵役者 · 十三年前活祭"]
+
+  K2 -. 姐弟 .- K3
+  J -. 母女 .- K2
+  K1 -. 姐妹 .- K2
+  C -. 杀害 .-> L
+  K2 -. 刺死 .-> C
+  K3 -. 连环杀害 .-> D
+  K3 -. 连环杀害 .-> I
+  K3 -. 枪杀 .-> A
+  K3 -. 未遂 .-> F
+
+  style A fill:#a63c2e,color:#fff,stroke:#8a2f23
+  style C fill:#4c78a8,color:#fff,stroke:#3d648c
+  style K2 fill:#2f4a3c,color:#fff,stroke:#243a2f
+  style K3 fill:#b4772a,color:#fff,stroke:#8f5d1f
