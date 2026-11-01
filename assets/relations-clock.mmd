@@ -1,0 +1,44 @@
+flowchart TB
+  subgraph G["古峨家"]
+    A["古峨伦典<br/>前任馆主 · 已故"]
+    B["古峨时代<br/>伦典之妻 · 已故"]
+    C["古峨永远<br/>伦典之女 · 14 岁去世"]
+    D["古峨由季弥<br/>现任馆主 · 16 岁"]
+    E["足立辉美<br/>伦典之妹 · 监护人"]
+    A --- B
+    A --> C
+    A --> D
+    E -. 监护 .-> D
+  end
+
+  subgraph I["伊波家 · 馆内"]
+    F["伊波裕作<br/>佣人 · 已故"]
+    H["伊波纱世子<br/>现任管理人"]
+    J["伊波今日子<br/>裕作之女 · 已故"]
+    F --- H
+    F --> J
+  end
+
+  subgraph M["马渊家"]
+    K["马渊长平<br/>伦典挚友"]
+    L["马渊智<br/>永远的婚约人 · 已故"]
+    K --> L
+  end
+
+  subgraph R["调查组"]
+    N["小早川茂郎<br/>《CHAOS》副总编"]
+    O["江南孝明<br/>《CHAOS》编辑"]
+    P["内海笃志<br/>摄影师"]
+    S["光明寺美琴<br/>灵媒"]
+    T["W 大超常现象研究会<br/>6 人"]
+  end
+
+  U["鹿谷门实<br/>推理作家 · 侦探"]
+  C -. 婚约 .- L
+  H -. 管理 .-> D
+  R --> U
+
+  style H fill:#a63c2e,color:#fff,stroke:#8a2f23
+  style C fill:#4c78a8,color:#fff,stroke:#3d648c
+  style D fill:#2f4a3c,color:#fff,stroke:#243a2f
+  style U fill:#b4772a,color:#fff,stroke:#8f5d1f
