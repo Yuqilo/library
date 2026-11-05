@@ -42,6 +42,8 @@
   .links a{display:inline-block;margin:3px 10px 3px 0;color:var(--navy);font-size:13px}
   footer{max-width:1000px;margin:0 auto;padding:0 22px 40px;color:var(--muted);font-size:12px}
   .note{font-size:12px;color:var(--muted);margin-top:6px}
+  .points{margin:8px 0 0;padding-left:20px;font-size:13px;color:#33424f}
+  .points li{margin:5px 0}
 </style>
 </head>
 <body>
@@ -70,6 +72,10 @@
     <h2>模拟与数据</h2>
     <div id="sim-list"></div>
   </section>
+  <section id="analysis">
+    <h2>实验总结与失败分析</h2>
+    <div id="analysis-list"></div>
+  </section>
   <section id="docs">
     <h2>文档与附件</h2>
     <div class="card links" id="doc-list"></div>
@@ -79,7 +85,7 @@
   <div>本页由大肥鱼维护 · 每次实验后更新，重开即是最新；表格中的指数是经验权重打分，只排先后，不是精确预测。</div>
 </footer>
 <script>
-const LOGS = {"updated":"2026-11-05 16:29","plan":[],"done":[{"date":"2026-11-05","title":"原始方案 · B3（24G，12 wt%，纯水，6.2 mL/h）","status":"成功","detail":"未加空气隙、未加 DMF 浴的原始条件。24G 单孔，TPU/DMF 12 wt%，去离子水浴，6.2 mL/h。","result":"确认中空纤维——成腔成立。"},{"date":"2026-11-05","title":"原始方案 · A4（30G，10 wt%，水:乙醇 6:4，6.2 mL/h）","status":"未成功","detail":"未加空气隙、未加 DMF 浴。30G 单孔，水:乙醇 6:4 凝固浴，6.2 mL/h。","result":"实心，无腔。"},{"date":"2026-11-05","title":"原始方案 · B4（24G，12 wt%，水:乙醇 6:4，6.2 mL/h）","status":"未成功","detail":"未加空气隙、未加 DMF 浴。24G 单孔，水:乙醇 6:4 凝固浴，6.2 mL/h。","result":"未成腔，判失败。"},{"date":"2026-11-05","title":"原始方案 · C 对照（30G，15 wt%，水:乙醇 6:4，15 mL/h）","status":"未成功","detail":"未加空气隙、未加 DMF 浴。30G 单孔，15 wt% TPU/DMF，水:乙醇 6:4 凝固浴，15 mL/h。","result":"实心，与 2026-11-04 的记录一致。"},{"date":"2026-11-04","title":"理论补课：相转化 / 干-湿纺 / 溶剂-非溶剂","status":"成功","detail":"读《膜技术基本原理》第 2 版（Mulder 著，清华大学出版社 1999；PDF 页 = 书页 + 15），梳理相转化五法、喷丝头与空气隙、凝固浴作用。","result":"建立 hollow-fiber 知识库理论支（5 条），后续实验按此校准。"},{"date":"2026-11-05","title":"工艺模拟：加空气隙 + DMF 混水浴","status":"成功","detail":"在原有 9 组方案上叠加两个改进项：空气隙 5 mm、DMF 10 vol% 凝固浴（倒 U 形，峰值 8 vol%）。","result":"各组指数普遍涨 0.02–0.07；24G 全面优于 30G；最优 24G B3 气隙+DMF = 0.927。"},{"date":"首轮（记录）","title":"30G 单孔湿法首轮","status":"未成功","detail":"TPU 9313 / DMF 15 wt%，30G 单孔钢针，去离子水浴，15 mL/h。","result":"纤维实心、无腔——细径下挤出与相分离都卡住，这是后来全部方案的出发点。"}],"sim":[{"date":"2026-11-05","title":"两改进叠加 · 可行性排序（前 8）","desc":"指数 = 六因子 + 空气隙 + DMF 浴，加权几何平均；经验权重，只排先后。","rows":[{"needle":"24G","conc":"12 wt%","bath":"纯水","q":"6 mL/h","mods":"气隙+DMF","idx":"0.927"},{"needle":"24G","conc":"12 wt%","bath":"醇 6:4","q":"6 mL/h","mods":"气隙+DMF","idx":"0.911"},{"needle":"24G","conc":"10 wt%","bath":"纯水","q":"6 mL/h","mods":"气隙+DMF","idx":"0.911"},{"needle":"24G","conc":"12 wt%","bath":"纯水","q":"15 mL/h","mods":"气隙+DMF","idx":"0.899"},{"needle":"24G","conc":"12 wt%","bath":"纯水","q":"6 mL/h","mods":"仅 DMF 浴","idx":"0.898"},{"needle":"24G","conc":"10 wt%","bath":"醇 6:4","q":"6 mL/h","mods":"气隙+DMF","idx":"0.896"},{"needle":"30G","conc":"10 wt%","bath":"醇 6:4","q":"6 mL/h","mods":"气隙+DMF","idx":"0.842"},{"needle":"30G","conc":"15 wt%","bath":"醇 6:4","q":"15 mL/h","mods":"无（对照）","idx":"0.404"}]}],"docs":[{"name":"示意图 · 同轴湿纺制备 CT 中空多孔纤维（Word）","url":"lab/files/示意图-中空纤维湿法纺丝.docx"},{"name":"一周方案 30G 与 24G 模拟表（Excel）","url":"lab/files/一周方案-30G与24G针头模拟.xlsx"}]};
+const LOGS = {"updated":"2026-11-05 18:55","plan":[],"done":[{"date":"2026-11-05","title":"原始方案 · B3（24G，12 wt%，纯水，6.2 mL/h）","status":"成功","detail":"未加空气隙、未加 DMF 浴的原始条件。24G 单孔，TPU/DMF 12 wt%，去离子水浴，6.2 mL/h。","result":"确认中空纤维——成腔成立。"},{"date":"2026-11-05","title":"原始方案 · A4（30G，10 wt%，水:乙醇 6:4，6.2 mL/h）","status":"未成功","detail":"未加空气隙、未加 DMF 浴。30G 单孔，水:乙醇 6:4 凝固浴，6.2 mL/h。","result":"实心，无腔。"},{"date":"2026-11-05","title":"原始方案 · B4（24G，12 wt%，水:乙醇 6:4，6.2 mL/h）","status":"未成功","detail":"未加空气隙、未加 DMF 浴。24G 单孔，水:乙醇 6:4 凝固浴，6.2 mL/h。","result":"未成腔，判失败。"},{"date":"2026-11-05","title":"原始方案 · C 对照（30G，15 wt%，水:乙醇 6:4，15 mL/h）","status":"未成功","detail":"未加空气隙、未加 DMF 浴。30G 单孔，15 wt% TPU/DMF，水:乙醇 6:4 凝固浴，15 mL/h。","result":"实心，与 2026-11-04 的记录一致。"},{"date":"2026-11-04","title":"理论补课：相转化 / 干-湿纺 / 溶剂-非溶剂","status":"成功","detail":"读《膜技术基本原理》第 2 版（Mulder 著，清华大学出版社 1999；PDF 页 = 书页 + 15），梳理相转化五法、喷丝头与空气隙、凝固浴作用。","result":"建立 hollow-fiber 知识库理论支（5 条），后续实验按此校准。"},{"date":"2026-11-05","title":"工艺模拟：加空气隙 + DMF 混水浴","status":"成功","detail":"在原有 9 组方案上叠加两个改进项：空气隙 5 mm、DMF 10 vol% 凝固浴（倒 U 形，峰值 8 vol%）。","result":"各组指数普遍涨 0.02–0.07；24G 全面优于 30G；最优 24G B3 气隙+DMF = 0.927。"},{"date":"首轮（记录）","title":"30G 单孔湿法首轮","status":"未成功","detail":"TPU 9313 / DMF 15 wt%，30G 单孔钢针，去离子水浴，15 mL/h。","result":"纤维实心、无腔——细径下挤出与相分离都卡住，这是后来全部方案的出发点。"}],"sim":[{"date":"2026-11-05","title":"两改进叠加 · 可行性排序（前 8）","desc":"指数 = 六因子 + 空气隙 + DMF 浴，加权几何平均；经验权重，只排先后。","rows":[{"needle":"24G","conc":"12 wt%","bath":"纯水","q":"6 mL/h","mods":"气隙+DMF","idx":"0.927"},{"needle":"24G","conc":"12 wt%","bath":"醇 6:4","q":"6 mL/h","mods":"气隙+DMF","idx":"0.911"},{"needle":"24G","conc":"10 wt%","bath":"纯水","q":"6 mL/h","mods":"气隙+DMF","idx":"0.911"},{"needle":"24G","conc":"12 wt%","bath":"纯水","q":"15 mL/h","mods":"气隙+DMF","idx":"0.899"},{"needle":"24G","conc":"12 wt%","bath":"纯水","q":"6 mL/h","mods":"仅 DMF 浴","idx":"0.898"},{"needle":"24G","conc":"10 wt%","bath":"醇 6:4","q":"6 mL/h","mods":"气隙+DMF","idx":"0.896"},{"needle":"30G","conc":"10 wt%","bath":"醇 6:4","q":"6 mL/h","mods":"气隙+DMF","idx":"0.842"},{"needle":"30G","conc":"15 wt%","bath":"醇 6:4","q":"15 mL/h","mods":"无（对照）","idx":"0.404"}]}],"docs":[{"name":"示意图 · 同轴湿纺制备 CT 中空多孔纤维（Word）","url":"lab/files/示意图-中空纤维湿法纺丝.docx"},{"name":"一周方案 30G 与 24G 模拟表（Excel）","url":"lab/files/一周方案-30G与24G针头模拟.xlsx"}],"analysis":[{"date":"2026-11-05","kind":"待核","title":"第一批原始方案：结果与一个待核点","points":["B3（24G / 12 wt% / 纯水 / 6.2 mL/h）：成腔。第一批里唯一的成功。","B4（24G / 12 wt% / 水:乙醇 6:4 / 6.2 mL/h）：实心。","A4（30G / 10 wt% / 水:乙醇 6:4 / 6.2 mL/h）：实心。","C（30G / 15 wt% / 水:乙醇 6:4 / 15 mL/h）：实心。","待核：口述「乙醇浴那组成」与日志「纯水浴那组成」相反，等原始记录/照片确认。确认前，浴型相关的结论不要写进论文。"]},{"date":"2026-11-05","kind":"结论","title":"30G 四条全实心：卡在哪","points":["壁太薄：30G 外径 0.31 / 内径 0.16，壁厚约 0.075 mm；24G 约 0.11 mm。凝固时间与壁厚平方成正比，30G 快近一倍——壳还没长硬，内层已经塌了。","没有内压支撑：单孔无内注，腔全靠外层壳自己定型。24G 壳够厚撑得住；30G 壳太薄，一收缩直接回实心。","剪切与回弹：30G 在 6.2 mL/h 时壁面剪切约 4×10³ s⁻¹，链被拉直，出针口横向回弹把本来就小的腔压没。","泵余量：10 wt% + 6.2 mL/h 需 2.8 bar，虽在 5 bar 内但没富余，流量一抖射流就断。","合起来看：30G 单孔 + 无内注，在 TPU/DMF 体系下基本走不通，不是浓度没选对。"]},{"date":"2026-11-05","kind":"结论","title":"24G 成、乙醇浴不成：一个方向性的反转","points":["成腔要的不是「凝固越慢越好」，而是「凝固前沿有梯度」：外层先结硬壳、内层还是液体，壳硬了才撑得住收缩让出来的腔。","纯水：结皮快、梯度陡 → 有壳 → 成腔。","40% 乙醇：内外一起减速，梯度被抹平 → 没壳 → 不成腔。","推论：DMF 浴干的是同一件事（降活度、减速），减过头同样抹平梯度。第二批的 DMF 从 5 vol% 起，不要直接 10 vol%。"]},{"date":"2026-11-06","kind":"计划","title":"第二批怎么打","points":["主攻：24G / 12 wt% / 纯水 / 6.2 mL/h + 空气隙 5 mm。空气隙与水浴同向——都给外壳争取时间，不改变梯度方向。","对照：同组改 DMF 5 vol% 浴，看梯度是被加强还是被抹平。","一次只动一个变量：空气隙和 DMF 分开做，两个一起上，出事分不清是谁的锅。","30G 不再单孔纯浴硬试。要 30G 出腔，走内注（自制同轴）或产氢法（NaBH₄ + HCl 浴，见文献 n20）。"]},{"date":"2026-11-05","kind":"思路","title":"如果浴型结论被证实是反的","points":["「延迟分相有利成腔」这条要降权，模型里的 S3/S9 方向要跟着翻。","下一步把「凝固前沿梯度」做成显式因子，而不是拿「凝固快慢」当代理。","模型只是排先后，方向错了要跟着实验改，不能反过来拿模型去解释实验。"]}]};
 
 const $ = (id) => document.getElementById(id);
 function esc(s){ return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -141,6 +147,20 @@ function renderSim(){
   $('n-sim').textContent = list.reduce((a, s) => a + (s.rows || []).length, 0);
 }
 
+function renderAnalysis(){
+  const list = LOGS.analysis || [];
+  const kindCls = (k) => (k === '已验证' || k === '结论') ? 'ok' : (k === '待核' || k === '计划') ? 'do' : 'bad';
+  $('analysis-list').innerHTML = list.map(a => `
+    <div class="card">
+      <div class="head">
+        <span class="title">${esc(a.title)}</span>
+        <span class="tag ${kindCls(a.kind)}">${esc(a.kind)}</span>
+      </div>
+      <div class="meta">${esc(a.date)}</div>
+      <ul class="points">${(a.points || []).map(p => `<li>${esc(p)}</li>`).join('')}</ul>
+    </div>`).join('') || '<div class="card">还没有分析记录。</div>';
+}
+
 function renderDocs(){
   const list = LOGS.docs || [];
   $('doc-list').innerHTML = list.map(d => `<a href="${esc(d.url)}">${esc(d.name)}</a>`).join('')
@@ -148,7 +168,7 @@ function renderDocs(){
 }
 
 $('updated').textContent = LOGS.updated || '—';
-renderPlan(); renderDone(); renderSim(); renderDocs();
+renderPlan(); renderDone(); renderSim(); renderAnalysis(); renderDocs();
 </script>
 </body>
 </html>
