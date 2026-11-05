@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中空纤维实验日志 · 大肥鱼账本</title>
+<style>
+  :root{
+    --bg:#f7f5f0;--paper:#fffdf9;--ink:#23303d;--muted:#70808f;
+    --line:#e2ddd3;--navy:#1f4e79;--teal:#2a9d8f;--amber:#c98a2e;--red:#b5443c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.75}
+  header{background:linear-gradient(135deg,#1f4e79,#123a5c);color:#fff;padding:34px 22px 26px}
+  .wrap{max-width:1000px;margin:0 auto}
+  header h1{margin:0;font-size:26px;letter-spacing:2px}
+  header .sub{opacity:.82;font-size:13px;margin-top:6px;letter-spacing:1px}
+  .stats{display:flex;gap:18px;margin-top:16px;flex-wrap:wrap;font-size:13px;opacity:.9}
+  .stats b{font-size:18px;color:#ffd76a}
+  main{max-width:1000px;margin:0 auto;padding:22px 22px 60px}
+  section{margin-top:26px}
+  h2{font-size:17px;color:var(--navy);border-left:4px solid var(--teal);padding-left:10px;margin:0 0 12px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:8px;
+        padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .card .head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .card .title{font-weight:700;font-size:15px}
+  .tag{font-size:11px;padding:2px 8px;border-radius:10px;white-space:nowrap;border:1px solid}
+  .tag.do{color:var(--amber);border-color:#efd9b4;background:#fdf6ea}
+  .tag.ok{color:var(--teal);border-color:#bfe3dc;background:#eefaf7}
+  .tag.bad{color:var(--red);border-color:#f0cfcc;background:#fdf0ef}
+  .meta{color:var(--muted);font-size:12px;margin-top:4px}
+  .params{margin:8px 0 0;font-size:13px;color:#33424f}
+  .params code{background:#f2efe9;padding:1px 5px;border-radius:4px;font-size:12px}
+  table{width:100%;border-collapse:collapse;font-size:13px;background:var(--paper);
+        border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}
+  th{background:#eef2f6;color:var(--navy);font-weight:700;font-size:12px}
+  tr:last-child td{border-bottom:none}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .best{background:#eefaf7}
+  .links a{display:inline-block;margin:3px 10px 3px 0;color:var(--navy);font-size:13px}
+  footer{max-width:1000px;margin:0 auto;padding:0 22px 40px;color:var(--muted);font-size:12px}
+  .note{font-size:12px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>中空纤维实验日志</h1>
+    <div class="sub">扬州大学电能学院 · 热动课题组 · TPU 30G 针头极细中空纤维</div>
+    <div class="stats">
+      <span>预备 <b id="n-plan">0</b> 项</span>
+      <span>已做 <b id="n-done">0</b> 项</span>
+      <span>模拟 <b id="n-sim">0</b> 组</span>
+      <span>更新于 <b id="updated">—</b></span>
+    </div>
+  </div>
+</header>
+<main>
+  <section id="plan">
+    <h2>预备实验（待做）</h2>
+    <div id="plan-list"></div>
+  </section>
+  <section id="done">
+    <h2>已做实验（成功 / 未成功）</h2>
+    <div id="done-list"></div>
+  </section>
+  <section id="sim">
+    <h2>模拟与数据</h2>
+    <div id="sim-list"></div>
+  </section>
+  <section id="docs">
+    <h2>文档与附件</h2>
+    <div class="card links" id="doc-list"></div>
+  </section>
+</main>
+<footer>
+  <div>本页由大肥鱼维护 · 每次实验后更新，重开即是最新；表格中的指数是经验权重打分，只排先后，不是精确预测。</div>
+</footer>
+<script>
+const LOGS = {"updated":"2026-11-05 12:55","plan":[{"id":"A4","needle":"30G（内径 0.16 mm）","conc":"10 wt%","bath":"去离子水:乙醇 6:4","q":"6 mL/h","mods":"空气隙 5 mm + DMF 10 vol% 浴","note":"30G 最优组合，指数 0.842；先试这个再谈别的"},{"id":"B3","needle":"24G（内径 0.34 mm）","conc":"12 wt%","bath":"去离子水","q":"6 mL/h","mods":"空气隙 5 mm + DMF 10 vol% 浴","note":"全场最优，指数 0.927；建议第一枪就打它"},{"id":"B4","needle":"24G（内径 0.34 mm）","conc":"12 wt%","bath":"去离子水:乙醇 6:4","q":"6 mL/h","mods":"空气隙 5 mm + DMF 10 vol% 浴","note":"指数 0.911，与水浴打平；留作对照"},{"id":"C（对照）","needle":"30G（内径 0.16 mm）","conc":"15 wt%","bath":"去离子水:乙醇 6:4","q":"15 mL/h","mods":"无","note":"压降 60.6 bar，远超 5 bar 泵压上限；反面参照"}],"done":[{"date":"2026-11-04","title":"理论补课：相转化 / 干-湿纺 / 溶剂-非溶剂","status":"成功","detail":"读《膜技术基本原理》第 2 版（Mulder 著，清华大学出版社 1999；PDF 页 = 书页 + 15），梳理相转化五法、喷丝头与空气隙、凝固浴作用。","result":"建立 hollow-fiber 知识库理论支（5 条），后续实验按此校准。"},{"date":"2026-11-05","title":"工艺模拟：加空气隙 + DMF 混水浴","status":"成功","detail":"在原有 9 组方案上叠加两个改进项：空气隙 5 mm、DMF 10 vol% 凝固浴（倒 U 形，峰值 8 vol%）。","result":"各组指数普遍涨 0.02–0.07；24G 全面优于 30G；最优 24G B3 气隙+DMF = 0.927。"},{"date":"首轮（记录）","title":"30G 单孔湿法首轮","status":"未成功","detail":"TPU 9313 / DMF 15 wt%，30G 单孔钢针，去离子水浴，15 mL/h。","result":"纤维实心、无腔——细径下挤出与相分离都卡住，这是后来全部方案的出发点。"}],"sim":[{"date":"2026-11-05","title":"两改进叠加 · 可行性排序（前 8）","desc":"指数 = 六因子 + 空气隙 + DMF 浴，加权几何平均；经验权重，只排先后。","rows":[{"needle":"24G","conc":"12 wt%","bath":"纯水","q":"6 mL/h","mods":"气隙+DMF","idx":"0.927"},{"needle":"24G","conc":"12 wt%","bath":"醇 6:4","q":"6 mL/h","mods":"气隙+DMF","idx":"0.911"},{"needle":"24G","conc":"10 wt%","bath":"纯水","q":"6 mL/h","mods":"气隙+DMF","idx":"0.911"},{"needle":"24G","conc":"12 wt%","bath":"纯水","q":"15 mL/h","mods":"气隙+DMF","idx":"0.899"},{"needle":"24G","conc":"12 wt%","bath":"纯水","q":"6 mL/h","mods":"仅 DMF 浴","idx":"0.898"},{"needle":"24G","conc":"10 wt%","bath":"醇 6:4","q":"6 mL/h","mods":"气隙+DMF","idx":"0.896"},{"needle":"30G","conc":"10 wt%","bath":"醇 6:4","q":"6 mL/h","mods":"气隙+DMF","idx":"0.842"},{"needle":"30G","conc":"15 wt%","bath":"醇 6:4","q":"15 mL/h","mods":"无（对照）","idx":"0.404"}]}],"docs":[{"name":"示意图 · 同轴湿纺制备 CT 中空多孔纤维（Word）","url":"lab/files/示意图-中空纤维湿法纺丝.docx"},{"name":"一周方案 30G 与 24G 模拟表（Excel）","url":"lab/files/一周方案-30G与24G针头模拟.xlsx"}]};
+
+const $ = (id) => document.getElementById(id);
+function esc(s){ return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function renderPlan(){
+  const list = LOGS.plan || [];
+  $('plan-list').innerHTML = list.map(p => `
+    <div class="card">
+      <div class="head">
+        <span class="title">${esc(p.id)}　${esc(p.needle)}</span>
+        <span class="tag do">待做</span>
+      </div>
+      <div class="params">
+        原液 <code>${esc(p.conc)}</code>　凝固浴 <code>${esc(p.bath)}</code>　流速 <code>${esc(p.q)}</code>
+        ${p.mods ? '　改进 <code>'+esc(p.mods)+'</code>' : ''}
+      </div>
+      ${p.note ? `<div class="note">${esc(p.note)}</div>` : ''}
+    </div>`).join('') || '<div class="card">暂无预备实验。</div>';
+  $('n-plan').textContent = list.length;
+}
+
+function renderDone(){
+  const list = LOGS.done || [];
+  const tagCls = (s) => s === '成功' ? 'ok' : s === '未成功' ? 'bad' : 'do';
+  $('done-list').innerHTML = list.map(d => `
+    <div class="card">
+      <div class="head">
+        <span class="title">${esc(d.date)}　${esc(d.title)}</span>
+        <span class="tag ${tagCls(d.status)}">${esc(d.status)}</span>
+      </div>
+      <div class="params">${esc(d.detail)}</div>
+      ${d.result ? `<div class="note">结果：${esc(d.result)}</div>` : ''}
+    </div>`).join('') || '<div class="card">还没有已做实验的记录。</div>';
+  $('n-done').textContent = list.length;
+}
+
+function renderSim(){
+  const list = LOGS.sim || [];
+  $('sim-list').innerHTML = list.map(s => {
+    const rows = (s.rows || []).map((r, i) => `
+      <tr class="${i === 0 ? 'best' : ''}">
+        <td>${esc(r.needle)}</td><td>${esc(r.conc)}</td><td>${esc(r.bath)}</td>
+        <td>${esc(r.q)}</td><td>${esc(r.mods)}</td>
+        <td class="num">${esc(r.idx)}</td>
+      </tr>`).join('');
+    return `
+      <div class="card">
+        <div class="head">
+          <span class="title">${esc(s.title)}</span>
+          <span class="meta">${esc(s.date)}</span>
+        </div>
+        ${s.desc ? `<div class="note">${esc(s.desc)}</div>` : ''}
+        <table style="margin-top:10px">
+          <thead><tr><th>针头</th><th>浓度</th><th>凝固浴</th><th>流速</th><th>改进</th><th class="num">指数</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  }).join('') || '<div class="card">暂无模拟数据。</div>';
+  $('n-sim').textContent = list.reduce((a, s) => a + (s.rows || []).length, 0);
+}
+
+function renderDocs(){
+  const list = LOGS.docs || [];
+  $('doc-list').innerHTML = list.map(d => `<a href="${esc(d.url)}">${esc(d.name)}</a>`).join('')
+    || '暂无附件。';
+}
+
+$('updated').textContent = LOGS.updated || '—';
+renderPlan(); renderDone(); renderSim(); renderDocs();
+</script>
+</body>
+</html>
