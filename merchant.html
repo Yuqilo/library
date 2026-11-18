@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商家查询 · 对话版（免配置）</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root{
+    --bg:#0e1116; --panel:#161b23; --line:#242c38; --ink:#e8edf5;
+    --soft:#93a1b5; --accent:#4c8bf5; --accent2:#2b5fd9;
+  }
+  body{
+    font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    background:radial-gradient(1200px 600px at 20% -10%, #1a2434 0%, var(--bg) 55%);
+    color:var(--ink); min-height:100vh; display:flex; flex-direction:column;
+  }
+  header{
+    padding:16px 22px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:12px; background:rgba(16,20,27,.85);
+    backdrop-filter:blur(8px); position:sticky; top:0; z-index:5;
+  }
+  header .logo{
+    width:34px;height:34px;border-radius:9px;
+    background:linear-gradient(135deg,var(--accent),#7d4cf5);
+    display:grid;place-items:center;font-weight:800;font-size:16px;
+  }
+  header h1{ font-size:16px; font-weight:700; }
+  header small{ display:block; color:var(--soft); font-size:12px; margin-top:2px; }
+  header .spacer{ flex:1; }
+  header a{
+    color:var(--soft); font-size:12.5px; text-decoration:none; border:1px solid var(--line);
+    padding:7px 11px; border-radius:8px;
+  }
+  header a:hover{ color:var(--ink); border-color:#3a465a; }
+
+  #chat{ flex:1; overflow-y:auto; padding:26px 22px 12px; max-width:900px; width:100%; margin:0 auto; }
+  .msg{ display:flex; gap:12px; margin-bottom:20px; align-items:flex-start; }
+  .msg.me{ flex-direction:row-reverse; }
+  .avatar{
+    width:32px;height:32px;border-radius:50%;flex:0 0 32px;display:grid;place-items:center;
+    font-size:13px;font-weight:700;background:#222c3b;color:#9fb3cc;border:1px solid #2c3a4d;
+  }
+  .msg.me .avatar{ background:#1d3f7a; color:#bfd4ff; border-color:#2d5fb5; }
+  .bubble{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:13px 16px; max-width:80%; line-height:1.75; font-size:14.5px;
+    white-space:pre-wrap; word-break:break-word;
+  }
+  .msg.me .bubble{ background:#1b2b47; border-color:#27406b; }
+  .links{ display:grid; gap:10px; margin-top:12px; }
+  .linkcard{
+    display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--ink);
+    background:#1a212b; border:1px solid #27303d; border-radius:12px; padding:12px 14px;
+    transition:border-color .15s, transform .15s;
+  }
+  .linkcard:hover{ border-color:#3d5a86; transform:translateY(-1px); }
+  .linkcard .ico{
+    width:34px;height:34px;flex:0 0 34px;border-radius:9px;display:grid;place-items:center;
+    font-size:15px;font-weight:700;background:#223047;color:#9fc0ee;border:1px solid #2c4162;
+  }
+  .linkcard .t{ flex:1; }
+  .linkcard .t b{ display:block; font-size:14.5px; color:#dbe6f5; }
+  .linkcard .t span{ font-size:12px; color:#8b99ad; }
+  .linkcard .go{ color:#6c829c; font-size:12.5px; }
+
+  #composer{ border-top:1px solid var(--line); background:rgba(16,20,27,.9); padding:14px 22px 18px; position:sticky; bottom:0; }
+  .quick{ max-width:900px; margin:0 auto 10px; display:flex; gap:8px; flex-wrap:wrap; }
+  .quick button{
+    background:#151c26; border:1px solid #26303d; color:#9fb3cc; font-size:12.5px;
+    padding:6px 11px; border-radius:999px; cursor:pointer;
+  }
+  .quick button:hover{ color:#dce8f7; border-color:#35465d; }
+  .inner{ max-width:900px; margin:0 auto; display:flex; gap:10px; align-items:flex-end; }
+  textarea{
+    flex:1; resize:none; background:#141a22; border:1px solid var(--line); color:var(--ink);
+    border-radius:12px; padding:12px 14px; font-size:14.5px; line-height:1.6; min-height:52px; max-height:160px;
+    font-family:inherit; outline:none;
+  }
+  textarea:focus{ border-color:#34558a; box-shadow:0 0 0 3px rgba(76,139,245,.12); }
+  #send{
+    background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; color:#fff;
+    padding:0 20px; height:52px; border-radius:12px; cursor:pointer; font-size:14.5px; font-weight:600; min-width:88px;
+  }
+  .hint{ color:var(--soft); font-size:12.5px; }
+  @media (max-width:640px){ .bubble{ max-width:88%; font-size:14px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">商</div>
+  <div>
+    <h1>商家查询 · 对话版</h1>
+    <small>零配置 · 不用任何 Key · 点一下就跳过去查</small>
+  </div>
+  <div class="spacer"></div>
+  <a href="https://uri.amap.com/marker" target="_blank" rel="noopener">高德网页版</a>
+</header>
+
+<div id="chat"></div>
+
+<div id="composer">
+  <div class="quick">
+    <button data-q="星巴克 成都春熙路">星巴克 春熙路</button>
+    <button data-q="海底捞 成都">海底捞</button>
+    <button data-q="华西医院">华西医院</button>
+    <button data-q="红旗连锁 成都">红旗连锁</button>
+  </div>
+  <div class="inner">
+    <textarea id="input" placeholder="输入商家名称，可带城市，例如：星巴克 成都春熙路（回车发送，Shift+回车换行）"></textarea>
+    <button id="send">查询</button>
+  </div>
+</div>
+
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('send');
+
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function el(tag, cls, html){ const n = document.createElement(tag); if (cls) n.className = cls; if (html !== undefined) n.innerHTML = html; return n; }
+
+function addMsg(who, html){
+  const m = el('div', 'msg' + (who === 'me' ? ' me' : ''));
+  const a = el('div', 'avatar', who === 'me' ? '我' : '查');
+  const b = el('div', 'bubble', html);
+  m.append(a, b); chat.append(m); chat.scrollTop = chat.scrollHeight;
+  return { m, b };
+}
+
+function typeText(node, text, done){
+  let i = 0;
+  const step = Math.max(1, Math.round(text.length / 80));
+  const t = setInterval(() => {
+    i += step;
+    node.textContent = text.slice(0, i);
+    chat.scrollTop = chat.scrollHeight;
+    if (i >= text.length){ clearInterval(t); node.textContent = text; done && done(); }
+  }, 16);
+}
+
+const q = s => encodeURIComponent(s);
+
+// 各平台搜索 URL（都用官方网页搜索，无需 API）
+function buildLinks(name){
+  return [
+    { ico:'高', title:'高德地图 · 搜这个地方',
+      sub:'电话、营业时间、地图位置、用户评价',
+      url:'https://www.amap.com/search?query=' + q(name) },
+    { ico:'百', title:'百度地图 · 搜这个地方',
+      sub:'商户信息、实景、周边',
+      url:'https://map.baidu.com/search?query=' + q(name) },
+    { ico:'点', title:'大众点评 · 看看口碑',
+      sub:'评分、人均、网友评价（可能需要登录）',
+      url:'https://www.dianping.com/search/keyword/0/0_' + q(name) },
+    { ico:'企', title:'企查查 · 查工商信息',
+      sub:'公司主体、法人、经营范围、风险',
+      url:'https://www.qcc.com/search?key=' + q(name) },
+    { ico:'淘', title:'淘宝 / 闲鱼 · 找这家店卖什么',
+      sub:'如果你查的是网店',
+      url:'https://s.taobao.com/search?q=' + q(name) }
+  ];
+}
+
+function renderLinks(name){
+  const box = el('div', 'links');
+  buildLinks(name).forEach(it => {
+    const a = el('a', 'linkcard');
+    a.href = it.url; a.target = '_blank'; a.rel = 'noopener';
+    a.innerHTML = `<div class="ico">${it.ico}</div>
+      <div class="t"><b>${esc(it.title)}</b><span>${esc(it.sub)}</span></div>
+      <div class="go">打开 →</div>`;
+    box.append(a);
+  });
+  return box;
+}
+
+function answer(name){
+  return `收到，查「${name}」。\n\n这个版本不接数据源、不需要申请任何 Key，直接给你几个官方入口，点哪个就去哪查：`;
+}
+
+function ask(name){
+  addMsg('me', esc(name));
+  const { b } = addMsg('bot', '');
+  const pre = el('div', '');
+  b.append(pre);
+  typeText(pre, answer(name), () => b.append(renderLinks(name)));
+}
+
+function submit(){
+  const v = input.value.trim();
+  if (!v) return;
+  input.value = '';
+  ask(v);
+}
+sendBtn.addEventListener('click', submit);
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); submit(); }
+});
+document.querySelectorAll('.quick button').forEach(btn => {
+  btn.addEventListener('click', () => { input.value = btn.dataset.q; submit(); });
+});
+
+addMsg('bot', '你好，我是商家查询助手（免配置版）。\n\n你说一个商家名，我把它对应的几个官方查询入口摆出来——高德看位置电话、点评看口碑、企查看工商、淘宝看网店。\n\n点开即用，不用注册、不用 Key、不花一分钱。');
+input.focus();
+</script>
+</body>
+</html>
